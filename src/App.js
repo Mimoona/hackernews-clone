@@ -4,15 +4,17 @@ import './App.css';
 import axios from 'axios';
 
 
-
 function App() {
-  const URL = 'http://hn.algolia.com/api/v1/search?query='
+  
   const[item, setItem] = useState([])
   const[loading, setLoading]= useState(false)
+  const [querie, setQuerie] = useState('')
+  const [search, setSearch] = useState('')
+  const URL = `http://hn.algolia.com/api/v1/search?query=${search}`
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [search])
   
   const fetchData = () => {
      axios.get(URL)
@@ -23,22 +25,34 @@ function App() {
     .catch(err => console.log(err))
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setSearch(querie)
+    setQuerie('')
+  }
+
 console.log(item)
   return (
     <div >
-        <form >
-          <input/>
+        <form onSubmit={handleSubmit}>
+          <input value={querie} onChange={e => setQuerie(e.target.value)}/>
           <button type='submit'>
             Search
           </button>
         </form>
           {loading ? (
             <div>
-            <h1>Search for sth</h1>
+              {item.hits.map(eachObj => {
+                return(
+                <div>
+                <h1>{eachObj.title}</h1>
+                {/* <h1>{eachObj.author}</h1> */}
+                </div>
+               )})}
             </div>
           )
         
-          : <h1>It's loading wait.....</h1>
+          : <h1>Wait, It's loading.....</h1>
         }
     </div>
      
