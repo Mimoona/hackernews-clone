@@ -2,73 +2,29 @@ import React, { useState, useEffect } from 'react'
 import './App.css';
 //import NewsList from './components/NewsList'
 import axios from 'axios';
-// import Card from './Card'
+import mapTime from './components/mapTime';
 
 
-
-// function App() {
-//   const URL = `http://hn.algolia.com/api/v1/search?query=`
-//   const[item, setItem] = useState([])
-//   const[loading, setLoading]= useState(false)
-
-//   useEffect(() => {
-//     fetchData()
-//   }, [])
+function App() {
   
-//   const fetchData = () => {
-//      axios.get(URL)
-//     .then(res =>{
-//       setItem(res.data)
-//       setLoading(true)
-//     })
-//     .catch(err => console.log(err))
-//   }
-
-// console.log(item)
-//   return (
-//     <div >
-//         <form >
-//           <input/>
-//           <button type='submit'>
-//             Search
-//           </button>
-//           <Card/>
-//         </form>
-//           {loading ? (
-//             <div>
-//             <h1>Search for sth</h1>
-//             </div>
-//           )
-        
-//           : <h1>It's loading wait.....</h1>
-//         }
-//     </div>
-     
-//   );
-// }
-
-// export default App;
-
-
-const App = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const[item, setItem] = useState([])
+  const[loading, setLoading]= useState(false)
   const [querie, setQuerie] = useState('')
   const [search, setSearch] = useState('')
+  const URL = `http://hn.algolia.com/api/v1/search?query=${search}`
 
-  const URL = `http://hn.algolia.com/api/v1/search?query=`
-
- 
+  useEffect(() => {
+    fetchData()
+  }, [search])
   
   const fetchData = () => {
-    axios
-      .get(URL)
-      .then((res) => {
-        setData(res.data)
-        setLoading(true)
-      })
-      .catch((err) => console.log(err));
-  };
+     axios.get(URL)
+    .then(res =>{
+      setItem(res.data)
+      setLoading(true)
+    })
+    .catch(err => console.log(err))
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -76,43 +32,53 @@ const App = () => {
     setQuerie('')
   }
 
-  useEffect(() => {
-    fetchData();
-  }, [search]); 
+  // const newsApiDate = (api-creation-date-prop);
+  // const timestamp = new Date(newsApiDate).getTime();
+  // console.log(timestamp); // 1639484238000
+  // const Day = new Date(timestamp).getDate();
+  // const Month = new Date(timestamp).getMonth() + 1;
+  // const Year = new Date(timestamp).getFullYear();
+  // const OurNewDateFormat = `${Day}/${Month}/${Year}`;
 
 
+
+console.log(item)
   return (
-    <div style={{ textAlign: "center" }}>
+    <div >
         <form onSubmit={handleSubmit}>
-          <input value={querie} onChange={e => setQuerie(e.target.value)} />
+          <input value={querie} onChange={e => setQuerie(e.target.value)}/>
           <button type='submit'>
             Search
           </button>
         </form>
-          {loading ? (
+        {loading ? (
             <div>
-             <ol> {
-                data.hits
-                  .map(hit => {
-                    return  <>
-                       <li>
-                            <h1><a href={hit.url}>{hit.title}</a></h1>
-                            {/* <p><a href={hit.url}>url</a></p> */}
-                            <p>{hit.points} points</p>
-                       </li>
-                   </>
-                  
-                })
-              }</ol>
-            <h1>{data.hits.title}</h1>
-        
+            <ol >
+                {item.hits.map(eachObj => {
+                return(  <li style={{color: "rgb(251, 149, 53)", opacity: "0.8"}}>
+
+                <div>
+                <h1><a className="title" href={eachObj.url}>{eachObj.title}</a></h1>
+                <p className='unterTitle'><a href={eachObj.url}>{eachObj.points} points</a></p>
+                <p className='unterTitle'><a href={eachObj.url}>by {eachObj.author} </a> </p>
+                <p className='unterTitle'><a href={eachObj.url}>{eachObj.num_comments} comments</a></p>
+                <p className='unterTitle'><a href={eachObj.url}>{eachObj.created_at} </a></p>
+                <p className='unterTitle'><a href={eachObj.url}>{mapTime(eachObj.created_at_i)} </a></p> 
+            
+                
+                </div> 
+                </li>
+               )})} 
+             </ol>
             </div>
           )
+
         
-          : <h1>Loading...</h1>
+          : <h1>Wait, It's loading.....</h1>
         }
     </div>
+     
   );
-};
+}
 
 export default App;
