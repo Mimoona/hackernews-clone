@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './App.css';
 //import NewsList from './components/NewsList'
 import axios from 'axios';
-
+import mapTime from './components/mapTime';
 
 function App() {
   
@@ -40,17 +40,29 @@ console.log(item)
             Search
           </button>
         </form>
-          {loading ? (
+        {loading ? (
             <div>
-              {item.hits.map(eachObj => {
-                return(
+
+            <ol >
+                {item.hits.map(eachObj => {
+                return(  <li style={{color: "rgb(251, 149, 53)", opacity: "0.8"}}>
+
                 <div>
-                <h1>{eachObj.title}</h1>
-                {/* <h1>{eachObj.author}</h1> */}
-                </div>
-               )})}
+                <h1><a className="title" href={eachObj.url}>{eachObj.title}</a></h1>
+                <p className='unterTitle'><a href={eachObj.url}>{eachObj.points} points</a></p>
+                <p className='unterTitle'><a href={eachObj.url}>by {eachObj.author} </a> </p>
+                <p className='unterTitle'><a href={eachObj.url}>{eachObj.num_comments} comments</a></p>
+                <p className='unterTitle'><a href={eachObj.url}>{eachObj.created_at} </a></p>
+                <p className='unterTitle'><a href={eachObj.url}>{mapTime(eachObj.created_at_i)} </a></p> 
+            
+                
+                </div> 
+                </li>
+               )})} 
+             </ol>
             </div>
           )
+
         
           : <h1>Wait, It's loading.....</h1>
         }
