@@ -4,7 +4,6 @@ import './App.css';
 import axios from 'axios';
 import mapTime from './components/mapTime';
 
-
 function App() {
   
   const[item, setItem] = useState([])
@@ -32,16 +31,6 @@ function App() {
     setQuerie('')
   }
 
-  // const newsApiDate = (api-creation-date-prop);
-  // const timestamp = new Date(newsApiDate).getTime();
-  // console.log(timestamp); // 1639484238000
-  // const Day = new Date(timestamp).getDate();
-  // const Month = new Date(timestamp).getMonth() + 1;
-  // const Year = new Date(timestamp).getFullYear();
-  // const OurNewDateFormat = `${Day}/${Month}/${Year}`;
-
-
-
 console.log(item)
   return (
     <div >
@@ -53,6 +42,7 @@ console.log(item)
         </form>
         {loading ? (
             <div>
+
             <ol >
                 {item.hits.map(eachObj => {
                 return(  <li style={{color: "rgb(251, 149, 53)", opacity: "0.8"}}>
