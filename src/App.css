@@ -1,32 +1,36 @@
 * {
-  background-color: #010722;
+  background-color: #070b2b;
   color: white;
 }
 
 h1 {
-margin: 0px;
-padding-left: 20px;
-color: rgb(224, 224, 96);
-font-size: small;
+  margin: 0px;
+  padding-left: 20px;
+  color: rgb(224, 224, 96);
+  font-size: small;
 }
 
 .title {
   color: rgb(251, 149, 53);
   margin-bottom: 0px;
   padding-bottom: 0px;
-  font-size: 18px;
+  font-size: 22px;
 }
 
-a  {
+a {
   text-decoration: none;
-} 
+}
 
-.unterTitle {
+.subHeading {
   display: inline-block;
   color: white;
-  padding-right: 20px;
-  margin-top: 0px;
-  padding-top: 0px;
-  font-size: 11px;
-  /* margin-left: 30px; */
+  /* margin-top: 0px; */
+  /* padding-top: 0px; */
+  font-size: 15px;
+  margin-left: 30px;
+}
+
+.hLinks {
+  font-size: 20px;
+  font-family: "IBM Plex", sans;
 }
