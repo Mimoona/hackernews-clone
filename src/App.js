@@ -42,7 +42,6 @@ console.log(item)
         </form>
         {loading ? (
             <div>
-
             <ol >
                 {item.hits.map(eachObj => {
                 return(  <li style={{color: "rgb(251, 149, 53)", opacity: "0.8"}}>
@@ -61,9 +60,7 @@ console.log(item)
                )})} 
              </ol>
             </div>
-          )
-
-        
+        )
           : <h1>Wait, It's loading.....</h1>
         }
     </div>
