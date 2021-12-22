@@ -6,24 +6,41 @@ import mapTime from './components/mapTime';
 
 function App() {
   
-  const[item, setItem] = useState([])
+  const[hits, setHits] = useState([])
   const[loading, setLoading]= useState(false)
   const [querie, setQuerie] = useState('')
   const [search, setSearch] = useState('')
+  const[currentPage, setCurrentPage]= useState(1)
+  const[hitsPerPage, setHitsPerPage]= useState(10)
+
+
+
+
   const URL = `http://hn.algolia.com/api/v1/search?query=${search}`
 
   useEffect(() => {
-    fetchData()
-  }, [search])
-  
-  const fetchData = () => {
-     axios.get(URL)
-    .then(res =>{
-      setItem(res.data)
-      setLoading(true)
-    })
-    .catch(err => console.log(err))
-  }
+    const fetchData = async (URL) => {
+      await axios
+        .get(URL)
+        .then((res) => {
+          setHits(res.data.hits)
+          setLoading(true);
+        })
+        .catch((err) =>
+          alert(`Results:${err} ... Please try again`)
+      );
+  };
+
+
+
+
+
+
+
+
+
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -31,7 +48,7 @@ function App() {
     setQuerie('')
   }
 
-console.log(item)
+console.log(hits)
   return (
     <div >
         <form onSubmit={handleSubmit}>
@@ -44,16 +61,16 @@ console.log(item)
             <div>
 
             <ol >
-                {item.hits.map(eachObj => {
+                {hits.map(hit => {
                 return(  <li style={{color: "rgb(251, 149, 53)", opacity: "0.8"}}>
 
                 <div>
-                <h1><a className="title" href={eachObj.url}>{eachObj.title}</a></h1>
-                <p className='unterTitle'><a href={eachObj.url}>{eachObj.points} points</a></p>
-                <p className='unterTitle'><a href={eachObj.url}>by {eachObj.author} </a> </p>
-                <p className='unterTitle'><a href={eachObj.url}>{eachObj.num_comments} comments</a></p>
-                <p className='unterTitle'><a href={eachObj.url}>{eachObj.created_at} </a></p>
-                <p className='unterTitle'><a href={eachObj.url}>{mapTime(eachObj.created_at_i)} </a></p> 
+                <h1><a className="title" href={hit.url}>{hit.title}</a></h1>
+                <p className='unterTitle'><a href={hit.url}>{hit.points} points</a></p>
+                <p className='unterTitle'><a href={hit.url}>by {hit.author} </a> </p>
+                <p className='unterTitle'><a href={hit.url}>{hit.num_comments} comments</a></p>
+                <p className='unterTitle'><a href={hit.url}>{hit.created_at} </a></p>
+                <p className='unterTitle'><a href={hit.url}>{mapTime(hit.created_at_i)} </a></p> 
             
                 
                 </div> 
