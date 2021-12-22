@@ -10,18 +10,17 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [inputQuery, setInputQuery] = useState('')
   const [submittedQuery, setSubmittedQuery] = useState('')
-  const [hitOffset, setHitOffset] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
-  // Declarations for Pagination
-  const hitsPerPage = 5
+  const hitsPerPage = 10
 
   const fetchData = () => {
     setLoading(true);
     axios
     .get(`http://hn.algolia.com/api/v1/search?query=${submittedQuery}&hitsPerPage=100`)
-    .then(res =>{
-      setHits(res.data.hits);
+    .then(res => {
+      setHits(res.data.hits.filter(hit => hit.title));
       setLoading(false);
     })
     .catch(err => {
@@ -31,23 +30,20 @@ function App() {
   }
 
   useEffect(() => {
-    console.log('fetching data ' + submittedQuery)
     fetchData();
   }, [submittedQuery])
 
   useEffect(() => {
     setPageCount(Math.ceil(hits.length / hitsPerPage));
-    setHitsDisplayed(hits.slice(hitOffset, hitOffset + hitsPerPage))
-  }, [hits, hitOffset])
+    setHitsDisplayed(hits.slice(pageNumber, pageNumber + hitsPerPage))
+  }, [hits, pageNumber])
 
   const handlePageChange = ({selected}) => {
-    const newOffset = (selected * hitsPerPage) % hits.length;
-    setHitOffset(newOffset);
+    setPageNumber(selected * hitsPerPage);
   }
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('query: ' +  inputQuery)
     setSubmittedQuery(inputQuery)
   }
 
