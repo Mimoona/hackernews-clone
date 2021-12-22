@@ -2,77 +2,77 @@ import React, { useState, useEffect } from 'react'
 import './App.css';
 //import NewsList from './components/NewsList'
 import axios from 'axios';
-import mapTime from './components/mapTime';
+//import mapTime from './components/mapTime';
+
+import Hits from "./components/Hits";
+import Pagination from "./components/Pagination";
 
 function App() {
-  
+
   const[hits, setHits] = useState([])
   const[loading, setLoading]= useState(false)
-  const [querie, setQuerie] = useState('')
-  const [search, setSearch] = useState('')
+  const[querie, setQuerie] = useState('')
+  const[search, setSearch] = useState('')
   const[currentPage, setCurrentPage]= useState(1)
-  const[hitsPerPage, setHitsPerPage]= useState(10)
+  const[hitsPerPage]= useState(10);
 
 
 
-
+//add hitsPerPage to your Url 
+  //const URL = `http://hn.algolia.com/api/v1/search?query=${search}&hitsPerPage=${hitsPerPage}`
+  //const URL = `https://hn.algolia.com/api/v1/search?query=${search}&page=${currentPage}&hitsPerPage=${hitsPerPage}`
   const URL = `http://hn.algolia.com/api/v1/search?query=${search}`
-
   useEffect(() => {
-    const fetchData = async (URL) => {
+    const fetchData = async () => {
       await axios
         .get(URL)
         .then((res) => {
           setHits(res.data.hits)
+          console.log(hits)
           setLoading(true);
         })
         .catch((err) =>
-          alert(`Results:${err} ... Please try again`)
+          alert(`${err} ... Please try again`)
       );
-  };
+    };
+    fetchData();
+  },[search])
 
 
+  // to get the current hits
+  const indexOfLastHit = currentPage * hitsPerPage;
+  const indexOfFirstHit = indexOfLastHit - hitsPerPage;
+  const currentHits = hits.slice(indexOfFirstHit, indexOfLastHit);
+
+   // Changing the page
+  const paginate = pageNumber => {
+    setCurrentPage(pageNumber);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     setSearch(querie)
     setQuerie('')
   }
-
-console.log(hits)
   return (
-    <div >
+    <div className='container mt-5' >
+      <h1 className= "text-primary mb-3 mt-3">Hacker News</h1>
         <form onSubmit={handleSubmit}>
           <input value={querie} onChange={e => setQuerie(e.target.value)}/>
           <button type='submit'>
             Search
           </button>
         </form>
-        {loading ? (
-          <div>
+      <Hits currentHits={currentHits} loading={loading}/>
+      <Pagination
+          hitsPerPage = {hitsPerPage}
+          paginate = {paginate}
+          totalHits = {hits.length}
 
-            <ol >
-                {hits.map(hit => {
-                return(
-                <li style={{color: "rgb(251, 149, 53)", opacity: "0.8"}}>
-                <div>
-                  <h1><a className="title" href={hit.url}>{hit.title}</a></h1>
-                  <p className='unterTitle'><a href={hit.url}>{hit.points} points</a></p>
-                  <p className='unterTitle'><a href={hit.url}>by {hit.author} </a> </p>
-                  <p className='unterTitle'><a href={hit.url}>{hit.num_comments} comments</a></p>
-                  <p className='unterTitle'><a href={hit.url}>{hit.created_at} </a></p>
-                  <p className='unterTitle'><a href={hit.url}>{mapTime(hit.created_at_i)} </a></p>                 
-                </div> 
-                </li>
-              )
-              })} 
-            </ol>
-          </div>
-        )
-        : <h1>Wait, It's loading.....</h1>
-        }
+        />
+        {/* <Pagination hitsPerPage={hitsPerPage} totalHits={hits.length}/> */}
     </div>
   );
 }
 
-export default App;
+export default App
