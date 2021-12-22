@@ -85,7 +85,7 @@ return (
     nextLabel={"next"}
     breakLabel={"..."}
     pageCount={pageCount}
-    marginPagesDisplayed={5}
+    marginPagesDisplayed={2}
     onPageChange={handlePageChange}
     containerClassName={"pagination justify-content-center"}
     pageClassName={"page-item"}
