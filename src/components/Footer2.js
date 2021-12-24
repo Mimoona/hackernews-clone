@@ -34,7 +34,7 @@ export default function Footer() {
                         </ul>
                     </div>
                     <div class="col-lg-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
-                        <p class="copyright">Company Name © 2018</p>
+                        <p class="copyright">IT NEWS © 2021</p>
                     </div>
                 </div>
             </div>

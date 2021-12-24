@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './App.css';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate'
+import Footer2 from "./components/Footer2"
 
 function App() {
   
@@ -97,7 +98,7 @@ return (
     
     />
     
-    {/* <Footer/> */}
+     <Footer2/> 
    
   </div>
    
