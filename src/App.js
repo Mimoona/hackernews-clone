@@ -1,84 +1,67 @@
 import React, { useState, useEffect } from 'react'
 import './App.css';
-//import NewsList from './components/NewsList'
 import axios from 'axios';
-//import PaginationItems from './components/PaginationItems'
-import ReactPaginate from "react-paginate"
-import Header from './components/Header'
-import Footer from "./components/Footer"
+import ReactPaginate from 'react-paginate'
 
 function App() {
   
-  const[items, setItems] = useState([])
-  const[loading, setLoading]= useState(false)
-  const [querie, setQuerie] = useState('')
-  const [search, setSearch] = useState('')
-  const[pageCount,setPageCount]=useState(0)
-  // const[page,setPage] = useState(1)
-  const [itemOffset, setItemOffset] = useState(0);
+  const [hits, setHits] = useState([])
+  const [hitsDisplayed, setHitsDisplayed] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [inputQuery, setInputQuery] = useState('')
+  const [submittedQuery, setSubmittedQuery] = useState('')
+  const [pageNumber, setPageNumber] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
- 
-  const itemsPerPage = 10
-  //const URL = `http://hn.algolia.com/api/v1/search?query=${search}&tags=front_page`
-  // const URL = `http://hn.algolia.com/api/v1/search?query=${search}&page=2`
-  const URL = `http://hn.algolia.com/api/v1/search?query=${search}&hitsPerPage=10`
+  const hitsPerPage = 10
 
   const fetchData = () => {
-    axios.get(URL)
-   .then(res =>{
-     setItems(res.data.hits);
-     setLoading(true);
-   })
-   .catch(err => console.log(err))
- }
-
-  useEffect(() => {
-      fetchData();
-  }, [search])
-
-  useEffect(() => {
-    // Fetch items from another resources.
-    const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    setItems(items.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(items.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage]);
-  
-  
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setSearch(querie)
-    setQuerie('')
+    setLoading(true);
+    axios
+    .get(`http://hn.algolia.com/api/v1/search?query=${submittedQuery}&hitsPerPage=100`)
+    .then(res => {
+      setHits(res.data.hits.filter(hit => hit.title));
+      setLoading(false);
+    })
+    .catch(err => {
+      console.log(err);
+      setLoading(false);
+    })
   }
 
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % items.length;
-    //const newOffset = event.selected + 1
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
-    setItemOffset(newOffset);
-  };
-  
-console.log(items)
-  return (
-    <div >
-      <Header />
-      <br></br>
-        <form style={{textAlign:"center"}} class="search" onSubmit={handleSubmit}>
-          <input value={querie} onChange={e => setQuerie(e.target.value)}/>
-          <button type='submit'>
-            Search
-          </button>
-        </form>
-        {loading ? (
-            <div>
+  useEffect(() => {
+    fetchData();
+  }, [submittedQuery])
 
-            <ol >
-                {items && items
-                // .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-                .map(hit => {
+  useEffect(() => {
+    setPageCount(Math.ceil(hits.length / hitsPerPage));
+    setHitsDisplayed(hits.slice(pageNumber, pageNumber + hitsPerPage))
+  }, [hits, pageNumber])
+
+  const handlePageChange = ({selected}) => {
+    setPageNumber(selected * hitsPerPage);
+  }
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setSubmittedQuery(inputQuery)
+  }
+
+return (
+  <div >
+    {/* <Header /> */}
+    <br></br>
+      <form style={{textAlign:"center"}} class="search" onSubmit={handleSubmit}>
+        <input value={inputQuery} onChange={e => setInputQuery(e.target.value)}/>
+        <button type='submit'>
+          Search
+        </button>
+      </form>
+      {loading ? <h1>Wait, It's loading.....</h1> :(
+          <div>
+          <ol >
+              {hitsDisplayed && hitsDisplayed
+              .map(hit => {
                 return(  
                 <li style={{color: "rgb(251, 149, 53)", opacity: "0.8"}}>
                   <div>
@@ -88,37 +71,37 @@ console.log(items)
                     {/* <p><a href={eachObj.url}>{mapTime(eachObj.created_at_i)} </a></p>  */}
                   </div> 
                 </li>
-               )})} 
-             </ol>
-            </div>
-          )
-          : <h1>Wait, It's loading.....</h1>
-        }
-      <ReactPaginate
-      previousLabel={"previous"}
-      nextLabel={"next"}
-      breakLabel={"..."}
-      pageCount={pageCount}
-      marginPagesDisplayed={5}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination justify-content-center"}
-      pageClassName={"page-item"}
-      pageLinkClassName= {"page-link"}
-      previousClassName= {"page-items"}
-      previousLinkClassName={"page-link"}
-      nextClassName={"page-item"}
-      nextLinkClassName={"page-link"}
-      breakClassName={"page-item"}
-      breakLinkClassName={"page-Link"}
-      activeClassName={"onPageActive"}
-      
-      />
-      
-      {/* <Footer/> */}
-     
-    </div>
-     
-  );
+             )})} 
+           </ol>
+          </div>
+        )
+      }
+    <ReactPaginate
+    previousLabel={"previous"}
+    nextLabel={"next"}
+    breakLabel={"..."}
+    pageCount={pageCount}
+    marginPagesDisplayed={2}
+    onPageChange={handlePageChange}
+    containerClassName={"pagination justify-content-center"}
+    pageClassName={"page-item"}
+    pageLinkClassName= {"page-link"}
+    pageRangeDisplayed={5}
+    previousClassName= {"page-items"}
+    previousLinkClassName={"page-link"}
+    nextClassName={"page-item"}
+    nextLinkClassName={"page-link"}
+    breakClassName={"page-item"}
+    breakLinkClassName={"page-Link"}
+    activeClassName={"onPageActive"}
+    
+    />
+    
+    {/* <Footer/> */}
+   
+  </div>
+   
+);
 }
 
 export default App
