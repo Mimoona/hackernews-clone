@@ -3,6 +3,7 @@ import './App.css';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate'
 import Footer2 from "./components/Footer2"
+import Header  from './components/Header';
 
 function App() {
   
@@ -52,7 +53,7 @@ return (
   <div >
     {/* <Header /> */}
     <br></br>
-
+ 
     <div class="main"> 
       <form style={{textAlign:"center"}} class="search" onSubmit={handleSubmit}>
         <input value={inputQuery} onChange={e => setInputQuery(e.target.value)}/>
