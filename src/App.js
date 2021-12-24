@@ -52,6 +52,8 @@ return (
   <div >
     {/* <Header /> */}
     <br></br>
+
+    <div class="main"> 
       <form style={{textAlign:"center"}} class="search" onSubmit={handleSubmit}>
         <input value={inputQuery} onChange={e => setInputQuery(e.target.value)}/>
         <button type='submit'>
@@ -77,6 +79,7 @@ return (
           </div>
         )
       }
+      <br/>
     <ReactPaginate
     previousLabel={"previous"}
     nextLabel={"next"}
@@ -95,13 +98,11 @@ return (
     breakClassName={"page-item"}
     breakLinkClassName={"page-Link"}
     activeClassName={"onPageActive"}
-    
-    />
-    
-     <Footer2/> 
-   
+    /> <br/> <br/> 
+     </div>
+    <Footer2/>
   </div>
-   
+  
 );
 }
 
