@@ -3,7 +3,8 @@ import './App.css';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate'
 import Footer2 from "./components/Footer2"
-import Header  from './components/Header';
+import Header from './components/Header';
+
 
 function App() {
   
@@ -50,12 +51,11 @@ function App() {
   }
 
 return (
-  <div >
-    {/* <Header /> */}
-    <br></br>
- 
+  <div>
+    <Header/>
     <div class="main"> 
-      <form style={{textAlign:"center"}} class="search" onSubmit={handleSubmit}>
+      <form style={{ textAlign: "center" }} class="search" onSubmit={handleSubmit}>
+        <br></br>
         <input value={inputQuery} onChange={e => setInputQuery(e.target.value)}/>
         <button type='submit'>
           Search
