@@ -1,7 +1,6 @@
+import React from 'react'
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import Logo from './Logo.png'
-
-
-
 function Header() {
     return (
       <header>
@@ -17,6 +16,8 @@ function Header() {
                 </div>
       </header>
     );
+  
+
 }
   
 export default Header

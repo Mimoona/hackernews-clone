@@ -26,7 +26,7 @@ function App() {
       setLoading(false);
     })
     .catch(err => {
-      console.log(err);
+      alert(err);
       setLoading(false);
     })
   }
@@ -51,7 +51,7 @@ function App() {
 
 return (
   <div >
-    {/* <Header /> */}
+    <Header/>
     <br></br>
  
     <div class="main"> 
