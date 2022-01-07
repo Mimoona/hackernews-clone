@@ -75,7 +75,11 @@ return (
               <li style={{color: "rgb(251, 149, 53)", opacity: "0.8"}}>
                 <div>
                   <h1><a  className="title"  href={hit.url}>{hit.title}</a></h1>
+<<<<<<< HEAD
                   <p  className="subHeading" ><a href={hit.url}>{hit.points} points - </a> <a href={hit.url}> by {hit.author} - </a> <a href={hit.url}>{hit.num_comments} comments - </a> <a href={hit.url}>{hit.created_at} </a>
+=======
+                  <p  className="subHeading" ><a href={hit.url}>{hit.points} points,  </a> <a href={hit.url}> by {hit.author},  </a> <a href={hit.url}>{hit.num_comments} comments,  </a> <a href={hit.url}>{hit.created_at} </a>
+>>>>>>> 41dba1b23cd52f950cbb8f787e6924af2fbff595
                   </p>
                 </div> 
               </li>
